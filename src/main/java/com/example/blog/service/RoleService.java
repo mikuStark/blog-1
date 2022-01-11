@@ -14,12 +14,34 @@ import java.util.List;
 public class RoleService extends EntityService<Role> implements IRoleService {
 
     @Autowired
-    RoleRepository repository;
+    private RoleRepository repository;
 
     @Override
     @NotNull
     @SneakyThrows
     public List<Role> findAllByUserId(@NotNull final String userId) {
         return repository.findAllByUserId(userId);
+    }
+
+    @Override
+    public Role findById(String id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Role add(Role entity) {
+        if (entity == null) return null;
+        repository.save(entity);
+        return entity;
+    }
+
+    @Override
+    public void deleteById(String id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Boolean existById(String id) {
+        return repository.existsById(id);
     }
 }

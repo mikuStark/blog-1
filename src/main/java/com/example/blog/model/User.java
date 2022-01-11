@@ -53,8 +53,9 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public User(@NotNull String login, @NotNull Set<Role> roles) {
+    public User(@NotNull String login, @NotNull String passwordHash, @NotNull Set<Role> roles) {
         this.login = login;
+        this.passwordHash = passwordHash;
         this.roles = roles;
     }
 }

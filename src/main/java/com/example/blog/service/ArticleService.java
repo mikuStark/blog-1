@@ -41,4 +41,26 @@ public class ArticleService extends EntityService<Article> implements IArticleSe
         article.setViews(article.getViews()+1);
         repository.save(article);
     }
+
+    @Override
+    public Article findById(String id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Article add(Article entity) {
+        if (entity == null) return null;
+        repository.save(entity);
+        return entity;
+    }
+
+    @Override
+    public void deleteById(String id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Boolean existById(String id) {
+        return repository.existsById(id);
+    }
 }
