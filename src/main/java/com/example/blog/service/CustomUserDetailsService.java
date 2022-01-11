@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -36,7 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         builder = org.springframework.security.core.userdetails.User.withUsername(login);
         builder.password(user.getPasswordHash());
 
-        @NotNull final List<Role> userRoles = roleService.findAllByUserId(user.getId());
+        @NotNull final List<Role> userRoles = new ArrayList<>(userService.findByLogin(login).getRoles());
         @NotNull final List<String> roles = new ArrayList<>();
         userRoles.forEach(t -> roles.add(t.toString()));
         builder.roles(roles.toArray(new String[]{}));

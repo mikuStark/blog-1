@@ -3,6 +3,7 @@ package com.example.blog.controller;
 import com.example.blog.api.service.IArticleService;
 import com.example.blog.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +24,13 @@ public class BlogController {
         return "all-articles";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/all-articles/add-article")
     public String addArticle(Model model) {
         return "add-article";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping("/all-articles/add-article")
     public String addPostArticle(
             @RequestParam String title,
@@ -38,6 +41,7 @@ public class BlogController {
         return "redirect:/all-articles";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/all-articles/{id}")
     public String articleMore(@PathVariable(value = "id") String id, Model model) {
         if (!articleService.existById(id)) {
@@ -48,6 +52,7 @@ public class BlogController {
         return "article-more";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/all-articles/{id}/edit")
     public String articleEdit(@PathVariable(value = "id") String id, Model model) {
         if (!articleService.existById(id)) {
@@ -57,6 +62,7 @@ public class BlogController {
         return "edit-article";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping("/all-articles/{id}/edit")
     public String articleUpdateEdit(
             @PathVariable(value = "id") String id,
@@ -71,6 +77,7 @@ public class BlogController {
         return "redirect:/all-articles/"+id;
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping("/all-articles/{id}/delete")
     public String articleDelete(@PathVariable(value = "id") String id, Model model) {
         if (!articleService.existById(id)) {

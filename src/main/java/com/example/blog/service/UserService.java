@@ -30,9 +30,7 @@ public class UserService extends EntityService<User> implements IUserService {
 
     @PostConstruct
     private void init() {
-        initUser("admin", "admin", RoleType.ADMIN);
         initUser("user", "user", RoleType.USER);
-        initUser("moderator", "moderator", RoleType.USER);
     }
 
     private void initUser(
@@ -52,11 +50,9 @@ public class UserService extends EntityService<User> implements IUserService {
         @NotNull final User user = new User();
         user.setLogin(login);
         user.setPasswordHash(passwordHash);
+        Role role = new Role(roleType);
+        user.getRoles().add(role);
         repository.save(user);
-        @NotNull final Role role = new Role();
-        role.setUserId(user.getId());
-        if (roleType != null) role.setName(roleType);
-        roleService.add(role);
     }
 
     @Override

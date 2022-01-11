@@ -9,8 +9,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +24,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Role {
     @Id
+    @Column(name="role_id")
     private String id = UUID.randomUUID().toString();
 
     @Enumerated(EnumType.STRING)
@@ -28,7 +33,4 @@ public class Role {
     public Role(RoleType name) {
         this.name = name;
     }
-
-    @Column(name = "user_id")
-    protected String userId;
 }
