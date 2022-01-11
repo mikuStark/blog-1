@@ -18,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("user")
                 .password("user")
-                .roles(RoleType.USER.getDisplayName());
+                .roles(RoleType.USER.toString());
     }
 
     @Override
@@ -32,8 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .defaultSuccessUrl("/")
                 .and()
-                .logout().permitAll();
-
+                .logout().permitAll()
+                .logoutSuccessUrl("/");
     }
 
         @Bean

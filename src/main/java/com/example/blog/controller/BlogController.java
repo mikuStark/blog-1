@@ -1,8 +1,7 @@
 package com.example.blog.controller;
 
+import com.example.blog.api.service.IArticleService;
 import com.example.blog.model.Article;
-import com.example.blog.repo.ArticleRepository;
-import com.example.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BlogController {
 
     @Autowired
-    private ArticleService articleService;
+    private IArticleService articleService;
 
     @GetMapping("/all-articles")
     public String getAllArticles(Model model) {
@@ -44,6 +43,7 @@ public class BlogController {
         if (!articleService.existById(id)) {
             return "redirect:/all-articles";
         }
+        articleService.incrementViews(id);
         model.addAttribute("article", articleService.findById(id));
         return "article-more";
     }
