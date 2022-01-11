@@ -1,5 +1,6 @@
 package com.example.blog.model;
 
+import com.example.blog.enumerated.RoleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +46,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    public User(@NotNull String login, @NotNull String passwordHash) {
+        this.login = login;
+        this.passwordHash = passwordHash;
+    }
 
     public User(@NotNull String login, @NotNull String passwordHash, @NotNull Set<Role> roles) {
         this.login = login;

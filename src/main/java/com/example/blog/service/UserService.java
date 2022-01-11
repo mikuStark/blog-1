@@ -1,10 +1,10 @@
 package com.example.blog.service;
 
-import com.example.blog.api.service.IRoleService;
 import com.example.blog.api.service.IUserService;
 import com.example.blog.enumerated.RoleType;
 import com.example.blog.exception.EmptyLoginException;
 import com.example.blog.exception.EmptyPasswordException;
+import com.example.blog.exception.ExistLoginException;
 import com.example.blog.model.Role;
 import com.example.blog.model.User;
 import com.example.blog.repo.UserRepository;
@@ -23,15 +23,12 @@ public class UserService extends EntityService<User> implements IUserService {
     private UserRepository repository;
 
     @Autowired
-    private IRoleService roleService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostConstruct
-    private void init() {
-        initUser("user", "user", RoleType.USER);
-    }
+//    @PostConstruct
+//    private void init() {
+//        initUser("user", "user", RoleType.USER);
+//    }
 
     private void initUser(
             @Nullable final String login, @Nullable final String password, @Nullable final RoleType roleType
@@ -44,15 +41,30 @@ public class UserService extends EntityService<User> implements IUserService {
     public void createUser(
             @Nullable final String login, @Nullable final String password, @Nullable final RoleType roleType
     ) {
+        User user = userCreate(login, password);
+        Role role = new Role(roleType);
+        user.getRoles().add(role);
+        repository.save(user);
+    }
+
+    @Override
+    public User createUser(@Nullable String login, @Nullable String password) {
+        User user = userCreate(login, password);
+        Role role = new Role(RoleType.USER);
+        user.getRoles().add(role);
+        repository.save(user);
+        return user;
+    }
+
+    private User userCreate(@Nullable String login, @Nullable String password) {
         if (login == null || login.isEmpty()) throw new EmptyLoginException();
         if (password == null || password.isEmpty()) throw new EmptyPasswordException();
+        if (repository.existsByLogin(login)) throw new ExistLoginException();
         @NotNull final String passwordHash = passwordEncoder.encode(password);
         @NotNull final User user = new User();
         user.setLogin(login);
         user.setPasswordHash(passwordHash);
-        Role role = new Role(roleType);
-        user.getRoles().add(role);
-        repository.save(user);
+        return user;
     }
 
     @Override

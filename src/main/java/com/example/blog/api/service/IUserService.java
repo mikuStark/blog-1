@@ -8,4 +8,6 @@ public interface IUserService extends IEntityService<User>{
     User findByLogin(String login);
 
     void createUser(@Nullable final String login, @Nullable final String password, @Nullable final RoleType roleType);
+
+    User createUser(@Nullable final String login, @Nullable final String password);
 }
